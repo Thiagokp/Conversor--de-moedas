@@ -7,8 +7,9 @@ const currencySelector = document.querySelector("#select-currency")
     const currencyValueConverted = document.querySelector(".currency-value") //valor em dolar convertido
 
     const euroToday = 6.20 // Val.Euro
-    const dolarToday = 5.20 // Val.dolar
-
+    const dolarToday = 5.20 // Val.Dolar
+    const libraToday = 6.30 // Val.Libra
+    const bitcoinToday = 323.659 //Val.Bitcoin
 
     if (currencySelector.value == "dolar") { //Se estiver selecionado o valor de dolar, entre aqui
         currencyValueConverted.innerHTML = new Intl.NumberFormat("en-US", {
@@ -23,7 +24,19 @@ const currencySelector = document.querySelector("#select-currency")
         }).format(inputCurrencyValue / euroToday);
 
     }
-
+    if(currencySelector.value == "libra") {
+        currencyValueConverted.innerHTML = new Intl.NumberFormat("en-GB", {
+            style: "currency",
+            currency: "GBP"
+        }).format(inputCurrencyValue / libraToday);
+    
+    }
+    if(currencySelector.value == "bitcoin") {
+        currencyValueConverted.innerHTML = new Intl.NumberFormat("de-DE", {
+            style: "currency",
+            currency:"BTC"
+        }).format(inputCurrencyValue / bitcoinToday)
+    }
 
     currencyValueToConvert.innerHTML = new Intl.NumberFormat("pt-BR", {
         style: "currency",
@@ -43,12 +56,22 @@ function changeCurrency() {
         currencyName.innerHTML = "Euro"
         currencyImage.src = "./assets/Euro.png"
     }
-    
+    if (currencySelector.value == "libra"){
+        currencyName.innerHTML = "Libra esterlina"
+        currencyImage.src = "./assets/Libra.png"
+    }
+    if(currencySelector.value == "bitcoin"){
+        currencyName.innerHTML = "BTC bitcoin"
+        currencyImage.src = "./assets/Bitcoin.png"
+    }
+
+
     convertValues()
 
 }
 convertButton.addEventListener("click",function(){
-    console.log("Botao clicado")
+    console.log("Botao clicado");
+    convertValues();
 })
 
 
