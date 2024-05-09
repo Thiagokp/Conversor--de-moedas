@@ -1,5 +1,47 @@
+
+function salvaResultadoNoHistorico(conversao) {
+    let historico = recuperaHistoricoDeConversoes();
+
+    historico.push(conversao);
+
+    historico = JSON.stringify(historico);
+    localStorage.setItem("historico", historico);
+}
+
+function recuperaHistoricoDeConversoes() {
+    let historico = localStorage.getItem("historico");
+
+    if(!historico) {
+        return [];
+    }
+    let historicoConvertido = JSON.parse(historico);
+    return historicoConvertido;
+}
+
+function aceitaMensagem() {
+    let divMensagemUsuario = document.getElementById("container-mensagem-usuario");
+    divMensagemUsuario.classList.add("oculto");
+
+    localStorage.setItem("aceitouCookie", "1");
+}
+
+
 const convertButton = document.querySelector("#convert-button")
 const currencySelector = document.querySelector("#select-currency")
+
+let botaoAceitaMensagem = document.getElementById("botao-aceita-mensagem");
+botaoAceitaMensagem.addEventListener("click", aceitaMensagem);
+
+if(localStorage.getItem("aceitouCookie") == "ok") {
+    aceitaMensagem();
+}
+
+function aceitaMensagem() {
+    let divMensagemUsuario = document.getElementById("container-mensagem-usuario");
+    divMensagemUsuario.classList.add("oculto");
+
+    localStorage.setItem("aceitouCookie", "ok");
+}
 
  function convertValues() {
     const inputCurrencyValue = document.querySelector("#input-currency").value  //Val.Moeda
@@ -16,26 +58,28 @@ const currencySelector = document.querySelector("#select-currency")
             style: "currency",
             currency: "USD"
         }).format(inputCurrencyValue / dolarToday);  // Puxei o valor da converção para o campo desejado e foramtei o número 
+        salvaResultadoNoHistorico(inputCurrencyValue / dolarToday);
     }
     if (currencySelector.value == "euro") {
         currencyValueConverted.innerHTML = new Intl.NumberFormat("de-DE", { //Se estiver selecionado o valor de euro, entre aqui
             style: "currency",
             currency: "EUR"
         }).format(inputCurrencyValue / euroToday);
-
+        salvaResultadoNoHistorico(inputCurrencyValue / euroToday);
     }
     if(currencySelector.value == "libra") {
         currencyValueConverted.innerHTML = new Intl.NumberFormat("en-GB", {
             style: "currency",
             currency: "GBP"
         }).format(inputCurrencyValue / libraToday);
-    
+        salvaResultadoNoHistorico(inputCurrencyValue / libraToday);
     }
     if(currencySelector.value == "bitcoin") {
         currencyValueConverted.innerHTML = new Intl.NumberFormat("de-DE", {
             style: "currency",
             currency:"BTC"
         }).format(inputCurrencyValue / bitcoinToday)
+        salvaResultadoNoHistorico(inputCurrencyValue / bitcoinToday);
     }
 
     currencyValueToConvert.innerHTML = new Intl.NumberFormat("pt-BR", {
